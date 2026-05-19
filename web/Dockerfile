@@ -52,10 +52,14 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy Prisma schema and start script for production auto-migration
+# Copy Prisma schema, config, and start script for production auto-migration
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./
 COPY --chown=nextjs:nodejs start.sh ./
 RUN chmod +x start.sh
+
+# Install Prisma CLI in production to resolve 'prisma/config' during auto-migration
+RUN bun install prisma@7.8.0
 
 USER nextjs
 
