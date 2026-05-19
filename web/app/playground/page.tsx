@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function PlaygroundPage() {
   return (
-    <div className="flex flex-col h-screen p-6 max-w-7xl mx-auto w-full">
+    <div className="flex flex-col min-h-screen p-6 max-w-7xl mx-auto w-full">
       <div className="flex items-center gap-4 mb-6">
         <Link href="/" className="p-2 rounded-full hover:bg-white/10 transition-colors">
           <ArrowLeft className="w-6 h-6" />
@@ -15,7 +15,7 @@ export default function PlaygroundPage() {
         </div>
       </div>
       
-      <div className="flex-1 pb-6 min-h-0">
+      <div className="pb-12">
         <PlaygroundEditor />
       </div>
     </div>

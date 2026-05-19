@@ -1,4 +1,4 @@
-import { PrismaClient } from '@/lib/prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
@@ -51,13 +51,13 @@ async function main() {
     await prisma.$executeRawUnsafe(`CREATE SCHEMA IF NOT EXISTS sandbox_db;`);
     await prisma.$executeRawUnsafe(`GRANT ALL ON SCHEMA sandbox_db TO playground_user;`);
 
-    // 3. Grant read-only access to main table
-    await prisma.$executeRawUnsafe(`GRANT USAGE ON SCHEMA public TO playground_user;`);
-    await prisma.$executeRawUnsafe(`GRANT SELECT ON public.table_kpi_marketing TO playground_user;`);
+    // 3. Grant full access to sandbox_db
+    await prisma.$executeRawUnsafe(`GRANT ALL ON SCHEMA sandbox_db TO playground_user;`);
+    await prisma.$executeRawUnsafe(`ALTER ROLE playground_user SET search_path TO sandbox_db;`);
 
-    // 4. Revoke modifications on public schema
-    await prisma.$executeRawUnsafe(`REVOKE INSERT, UPDATE, DELETE, TRUNCATE ON ALL TABLES IN SCHEMA public FROM playground_user;`);
-    await prisma.$executeRawUnsafe(`REVOKE CREATE ON SCHEMA public FROM playground_user;`);
+    // 4. Strictly revoke all access to public schema and its tables
+    await prisma.$executeRawUnsafe(`REVOKE ALL ON SCHEMA public FROM playground_user;`);
+    await prisma.$executeRawUnsafe(`REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM playground_user;`);
 
     console.log('Playground Environment Ready.');
   } catch (error) {

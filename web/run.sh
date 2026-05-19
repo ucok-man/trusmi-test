@@ -26,15 +26,15 @@ execute_option() {
             
             echo "Menunggu database siap (5 detik)..."
             sleep 5
+
+            echo "Meng-generate Prisma Client..."
+            bunx prisma generate
             
             echo "Menjalankan migrasi database (db push)..."
             bunx prisma db push
             
             echo "Menjalankan Seeding database..."
             bunx prisma db seed
-            
-            echo "Meng-generate Prisma Client..."
-            bunx prisma generate
             
             echo "Aplikasi berjalan di background!"
             echo "Buka http://localhost:3000 di browser Anda."
