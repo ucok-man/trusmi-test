@@ -58,8 +58,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./
 COPY --chown=nextjs:nodejs start.sh ./
 RUN chmod +x start.sh
 
-# Install Prisma CLI in production to resolve 'prisma/config' during auto-migration
-RUN bun install prisma@7.8.0
+# Copy full Prisma modules from builder to ensure CLI and 'prisma/config' work at runtime
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/prisma ./node_modules/prisma
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma ./node_modules/@prisma
 
 USER nextjs
 
