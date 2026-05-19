@@ -52,9 +52,8 @@ RUN chown nextjs:nodejs .next
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Copy Prisma schema, seed script, and config for production auto-migration
+# Copy Prisma schema and start script for production auto-migration
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
-COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./
 COPY --chown=nextjs:nodejs start.sh ./
 RUN chmod +x start.sh
 

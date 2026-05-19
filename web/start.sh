@@ -6,8 +6,8 @@ echo "Menyiapkan Database Production..."
 bunx prisma db push --accept-data-loss
 
 echo "Menjalankan Seeding & Setup Role..."
-# Menjalankan script seed.ts menggunakan bun
-bunx prisma db seed
+# Menjalankan script seed.ts langsung menggunakan bun (tanpa package.json)
+bun prisma/seed.ts
 
 echo "Memulai Server Aplikasi..."
 # Jalankan Next.js server hasil build standalone
